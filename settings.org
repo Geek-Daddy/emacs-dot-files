@@ -145,15 +145,8 @@ Some keybindings
 #+END_SRC
    Autocompletion with company-mode support
 #+BEGIN_SRC emacs-lisp
-  (use-package ac-php
+  (use-package company-php
     :ensure t)
-  (add-hook 'php-mode-hook
-            '(lambda ()
-               (require 'company-php)
-               (company-mode t)
-               (ac-php-core-eldoc-setup) ;; enable eldoc
-               (make-local-variable 'company-backends)
-               (add-to-list 'company-backends 'company-ac-php-backend)))
 #+END_SRC
 * Org mode
 Let's start by setting default org-mode directory.
