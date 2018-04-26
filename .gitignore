@@ -5,3 +5,4 @@ elpa/
 *.elc~
 *.el~
 *.org~
+settings.el
