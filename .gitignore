@@ -1,0 +1,7 @@
+auto-save-list/
+elpa/
+.gitignore~
+*.elc
+*.elc~
+*.el~
+*.org~
