@@ -69,3 +69,21 @@
 
 (global-set-key (kbd "C-x g") 'magit-status)
 (global-set-key (kbd "C-x M-g") 'magit-dispatch-popup)
+
+(use-package flycheck
+  :ensure t)
+(global-flycheck-mode)
+
+(use-package php-mode
+  :ensure t)
+
+(add-hook 'php-mode-hook 'php-enable-wordpress-coding-style)
+
+(setq org-directory "~/org/")
+
+(setq org-hide-leading-stars t)
+(setq org-alphabetical-lists t)
+(setq org-src-fontify-natively t)  ;; you want this to activate coloring in blocks
+(setq org-src-tab-acts-natively t) ;; you want this to have completion in blocks
+(setq org-hide-emphasis-markers t) ;; to hide the *,=, or / markers
+(setq org-pretty-entities t)       ;; to have \alpha, \to and others display as utf8 http://orgmode.org/manual/Special-symbols.html

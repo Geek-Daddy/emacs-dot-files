@@ -110,7 +110,36 @@ Some keybindings
   (global-set-key (kbd "C-x g") 'magit-status)
   (global-set-key (kbd "C-x M-g") 'magit-dispatch-popup)
 #+END_SRC
+** Linter
+   For linting I use flycheck
+#+BEGIN_SRC emacs-lisp
+  (use-package flycheck
+    :ensure t)
+  (global-flycheck-mode)
+#+END_SRC
 * Lang
 ** PHP
+   First we need to install php-mode, which adds support for PHP files.
+#+BEGIN_SRC emacs-lisp
+  (use-package php-mode
+    :ensure t)
+#+END_SRC
+   Because I work mostly with WordPress I have setup php-mode with WP coding style.
+#+BEGIN_SRC emacs-lisp
+  (add-hook 'php-mode-hook 'php-enable-wordpress-coding-style)
+#+END_SRC
 * Org mode
+Let's start by setting default org-mode directory.
+#+BEGIN_SRC emacs-lisp
+  (setq org-directory "~/org/")
+#+END_SRC
+Some basic settings
+#+BEGIN_SRC emacs-lisp
+  (setq org-hide-leading-stars t)
+  (setq org-alphabetical-lists t)
+  (setq org-src-fontify-natively t)  ;; you want this to activate coloring in blocks
+  (setq org-src-tab-acts-natively t) ;; you want this to have completion in blocks
+  (setq org-hide-emphasis-markers t) ;; to hide the *,=, or / markers
+  (setq org-pretty-entities t)       ;; to have \alpha, \to and others display as utf8 http://orgmode.org/manual/Special-symbols.html
+#+END_SRC
 * Evil mode
