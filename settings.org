@@ -91,6 +91,11 @@ Fuzzy finder regexp for ivy
         '((t . ivy--regex-fuzzy)))
 #+END_SRC
 ** TODO setup does three
+** autoclose parens
+#+BEGIN_SRC emacs-lisp
+  (use-package smartparens
+    :ensure t)
+#+END_SRC
 * Autocompletion
 For autocompletion I use company-mode
 #+BEGIN_SRC emacs-lisp
@@ -136,8 +141,19 @@ Some keybindings
   (add-to-list 'auto-mode-alist '("\\.phtml\\'" . web-mode))
   (add-to-list 'auto-mode-alist '("\\.tpl\\.php\\'" . web-mode))
   (add-to-list 'auto-mode-alist '("\\.html\\.twig\\'" . web-mode))
-  (add-to-list 'auto-mode-alist '("\\.html?\\'" . web-mode))
-           
+  (add-to-list 'auto-mode-alist '("\\.html?\\'" . web-mode))        
+#+END_SRC
+   Autocompletion with company-mode support
+#+BEGIN_SRC emacs-lisp
+  (use-package ac-php
+    :ensure t)
+  (add-hook 'php-mode-hook
+            '(lambda ()
+               (require 'company-php)
+               (company-mode t)
+               (ac-php-core-eldoc-setup) ;; enable eldoc
+               (make-local-variable 'company-backends)
+               (add-to-list 'company-backends 'company-ac-php-backend)))
 #+END_SRC
 * Org mode
 Let's start by setting default org-mode directory.

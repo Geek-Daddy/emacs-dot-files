@@ -60,6 +60,9 @@
 (setq ivy-re-builders-alist
       '((t . ivy--regex-fuzzy)))
 
+(use-package smartparens
+  :ensure t)
+
 (use-package company
   :ensure t)
 (add-hook 'after-init-hook 'global-company-mode)
@@ -86,6 +89,16 @@
 (add-to-list 'auto-mode-alist '("\\.tpl\\.php\\'" . web-mode))
 (add-to-list 'auto-mode-alist '("\\.html\\.twig\\'" . web-mode))
 (add-to-list 'auto-mode-alist '("\\.html?\\'" . web-mode))
+
+(use-package ac-php
+  :ensure t)
+(add-hook 'php-mode-hook
+          '(lambda ()
+             (require 'company-php)
+             (company-mode t)
+             (ac-php-core-eldoc-setup) ;; enable eldoc
+             (make-local-variable 'company-backends)
+             (add-to-list 'company-backends 'company-ac-php-backend)))
 
 (setq org-directory "~/org/")
 
