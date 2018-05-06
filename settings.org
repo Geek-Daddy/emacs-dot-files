@@ -35,7 +35,7 @@ This package downloads and install packages from melpa and elpa
 #+BEGIN_SRC emacs-lisp
 (setq inhibit-splash-screen t)
 #+END_SRC
-** Change frame name for of emacs
+** Change frame name of emacs
 Borrowed from: http://mescal.imag.fr/membres/arnaud.legrand/misc/init.php
 #+BEGIN_SRC emacs-lisp
   (setq frame-title-format
@@ -65,7 +65,7 @@ Borrowed from: http://mescal.imag.fr/membres/arnaud.legrand/misc/init.php
   (prefer-coding-system 'utf-8)
 #+END_SRC
 ** which-key
-which-key adds popup with avinable keybindings
+which-key adds popup with available keybindings
 #+BEGIN_SRC emacs-lisp
   (use-package which-key
     :ensure t
@@ -98,6 +98,7 @@ Fuzzy finder regexp for ivy
         '((t . ivy--regex-fuzzy)))
 #+END_SRC
 ** helm
+   Replaced ivy with helm
  #+BEGIN_SRC emacs-lisp
    (use-package helm
      :ensure t)
@@ -171,6 +172,7 @@ Some keybindings
   (global-set-key (kbd "C-c t") 'visit-term-buffer)
 #+END_SRC
 ** RSS reader (elfeed)
+   TODO: elfeed works but doesn't use elfeed.org as source of feeds.
 #+BEGIN_SRC emacs-lisp
   (use-package elfeed
     :ensure t)
@@ -210,7 +212,7 @@ Some keybindings
 #+BEGIN_SRC emacs-lisp
   (add-hook 'php-mode-hook 'php-enable-wordpress-coding-style)
 #+END_SRC
-   Add and use web-mode for mixed html and php code (templates)
+   Add then use web-mode for mixed html and php code (templates)
 #+BEGIN_SRC emacs-lisp
   (use-package web-mode
     :ensure t)
