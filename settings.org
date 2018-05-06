@@ -20,12 +20,18 @@ This package downloads and install packages from melpa and elpa
 #+BEGIN_SRC emacs-lisp
 (require 'use-package)
 #+END_SRC
+** quelpa
+   Adds support for packages from git
+#+BEGIN_SRC emacs-lisp
+  (use-package quelpa-use-package
+    :ensure t)
+#+END_SRC
 * UI settings
 ** Turn off menu bar
 #+BEGIN_SRC emacs-lisp
-(menu-bar-mode -1)
+  (tool-bar-mode -1)
 #+END_SRC
-** Turn off splas screen
+** Turn off splash screen
 #+BEGIN_SRC emacs-lisp
 (setq inhibit-splash-screen t)
 #+END_SRC
@@ -50,6 +56,7 @@ Borrowed from: http://mescal.imag.fr/membres/arnaud.legrand/misc/init.php
 #+BEGIN_SRC emacs-lisp
   (line-number-mode 1)
   (column-number-mode 1)
+  (linum-mode 1)
 #+END_SRC
 ** utf-8 as default
 #+BEGIN_SRC emacs-lisp
@@ -66,35 +73,51 @@ which-key adds popup with avinable keybindings
 #+END_SRC
 ** ivy, swiper and counsel
 #+BEGIN_SRC emacs-lisp
-  (use-package ivy
-    :ensure t
-    :config (ivy-mode 1))
-  (use-package counsel
-    :ensure t)
-  (use-package swiper
-    :ensure t)
-
-  (setq ivy-use-virtual-buffers t)
-  (setq ivy-count-format "(%d/%d) ")
-  (global-set-key (kbd "C-s") 'swiper)
-  (global-set-key (kbd "M-x") 'counsel-M-x)
-  (global-set-key (kbd "C-x C-f") 'counsel-find-file)
-  (global-set-key (kbd "<f1> f") 'counsel-describe-function)
-  (global-set-key (kbd "<f1> v") 'counsel-describe-variable)
-  (global-set-key (kbd "<f1> l") 'counsel-find-library)
-  (global-set-key (kbd "<f2> i") 'counsel-info-lookup-symbol)
-  (global-set-key (kbd "<f2> u") 'counsel-unicode-char)
+  ;;(use-package ivy
+  ;;  :ensure t
+  ;;  :config (ivy-mode 1))
+  ;;(use-package counsel
+  ;;  :ensure t)
+  ;;(use-package swiper
+  ;;  :ensure t)
+  ;;
+  ;;(setq ivy-use-virtual-buffers t)
+  ;;(setq ivy-count-format "(%d/%d) ")
+  ;;(global-set-key (kbd "C-s") 'swiper)
+  ;;(global-set-key (kbd "M-x") 'counsel-M-x)
+  ;;(global-set-key (kbd "C-x C-f") 'counsel-find-file)
+  ;;(global-set-key (kbd "<f1> f") 'counsel-describe-function)
+  ;;(global-set-key (kbd "<f1> v") 'counsel-describe-variable)
+  ;;(global-set-key (kbd "<f1> l") 'counsel-find-library)
+  ;;(global-set-key (kbd "<f2> i") 'counsel-info-lookup-symbol)
+  ;;(global-set-key (kbd "<f2> u") 'counsel-unicode-char)
 #+END_SRC
 Fuzzy finder regexp for ivy
 #+BEGIN_SRC emacs-lisp
   (setq ivy-re-builders-alist
         '((t . ivy--regex-fuzzy)))
 #+END_SRC
-** TODO setup does three
+** helm
+ #+BEGIN_SRC emacs-lisp
+   (use-package helm
+     :ensure t)
+   (global-set-key (kbd "M-x") 'helm-M-x)
+   (helm-mode 1)
+ #+END_SRC
 ** autoclose parens
 #+BEGIN_SRC emacs-lisp
   (use-package smartparens
     :ensure t)
+#+END_SRC
+** fancy mode-line 
+#+BEGIN_SRC emacs-lisp
+  (use-package powerline
+    :ensure t)
+  (powerline-center-evil-theme)
+#+END_SRC
+** General keybindings
+#+BEGIN_SRC emacs-lisp
+  (global-set-key (kbd "<menu>") 'helm-M-x)
 #+END_SRC
 * Autocompletion
 For autocompletion I use company-mode
@@ -102,6 +125,16 @@ For autocompletion I use company-mode
   (use-package company
     :ensure t)
   (add-hook 'after-init-hook 'global-company-mode)
+
+  (use-package helm-company
+    :ensure t)
+  (eval-after-load 'company
+    '(progn
+       (define-key company-mode-map (kbd "C-:") 'helm-company)
+       (define-key company-active-map (kbd "C-:") 'helm-company)))
+  (use-package company-lsp
+    :ensure t)
+  (push 'company-lsp company-backends)
 #+END_SRC
 * Tools
 ** Git
@@ -122,6 +155,50 @@ Some keybindings
     :ensure t)
   (global-flycheck-mode)
 #+END_SRC
+** Terminal
+   Go to open terminal, if none open new one. [[http://emacsredux.com/blog/2013/03/29/terminal-at-your-fingertips/][emacsredux]]
+#+BEGIN_SRC emacs-lisp
+  (defun visit-term-buffer ()
+    "Create or visit a terminal buffer."
+    (interactive)
+    (if (not (get-buffer "*ansi-term*"))
+        (progn
+          (split-window-sensibly (selected-window))
+          (other-window 1)
+          (ansi-term (getenv "SHELL")))
+      (switch-to-buffer-other-window "*ansi-term*")))
+
+  (global-set-key (kbd "C-c t") 'visit-term-buffer)
+#+END_SRC
+** RSS reader (elfeed)
+#+BEGIN_SRC emacs-lisp
+  (use-package elfeed
+    :ensure t)
+  (use-package elfeed-org
+    :ensure t)
+  (elfeed-org)
+  (setq rmh-elfeed-org-files (list "~/org/elfeed.org"))
+#+END_SRC
+** Language Server Protocol
+#+BEGIN_SRC emacs-lisp
+  (use-package lsp-mode
+    :ensure t)
+  (use-package lsp-ui
+    :ensure t)
+  (add-hook 'lsp-mode-hook 'lsp-ui-mode)
+
+#+END_SRC
+** mastodon
+#+BEGIN_SRC emacs-lisp
+  (use-package mastodon
+    :ensure t)
+  (setq mastodon-instance-url "https://octodon.social")
+#+END_SRC
+** emojis
+#+BEGIN_SRC emacs-lisp
+  (use-package emojify
+    :ensure t)
+#+END_SRC
 * Lang
 ** PHP
    First we need to install php-mode, which adds support for PHP files.
@@ -141,19 +218,40 @@ Some keybindings
   (add-to-list 'auto-mode-alist '("\\.phtml\\'" . web-mode))
   (add-to-list 'auto-mode-alist '("\\.tpl\\.php\\'" . web-mode))
   (add-to-list 'auto-mode-alist '("\\.html\\.twig\\'" . web-mode))
-  (add-to-list 'auto-mode-alist '("\\.html?\\'" . web-mode))        
+  (add-to-list 'auto-mode-alist '("\\.html?\\'" . web-mode))
+
+  (setq php-template-compatibility nil)
 #+END_SRC
-   Autocompletion with company-mode support
+   Language server protocol support
 #+BEGIN_SRC emacs-lisp
-  (use-package company-php
+  (use-package lsp-php
     :ensure t)
 #+END_SRC
+** JS
+#+BEGIN_SRC emacs-lisp
+  (use-package nodejs-repl
+    :ensure t)
+
+  (add-hook 'js-mode-hook
+      (lambda ()
+	  (define-key js-mode-map (kbd "C-x C-e") 'nodejs-repl-send-last-expression)
+	  (define-key js-mode-map (kbd "C-c C-j") 'nodejs-repl-send-line)
+	  (define-key js-mode-map (kbd "C-c C-r") 'nodejs-repl-send-region)
+	  (define-key js-mode-map (kbd "C-c C-l") 'nodejs-repl-load-file)
+	  (define-key js-mode-map (kbd "C-c C-z") 'nodejs-repl-switch-to-repl)))
+#+END_SRC
 * Org mode
-Let's start by setting default org-mode directory.
+  Let's start by setting default org-mode directory.
 #+BEGIN_SRC emacs-lisp
   (setq org-directory "~/org/")
 #+END_SRC
-Some basic settings
+  Quickly open todo.org.
+#+BEGIN_SRC emacs-lisp
+  (global-set-key (kbd "<f6>") (lambda () (interactive)
+    (find-file "~/org/todo.org")
+    (message "Opened:  %s" (buffer-name))))
+#+END_SRC
+  Some basic settings
 #+BEGIN_SRC emacs-lisp
   (setq org-hide-leading-stars t)
   (setq org-alphabetical-lists t)
@@ -162,4 +260,91 @@ Some basic settings
   (setq org-hide-emphasis-markers t) ;; to hide the *,=, or / markers
   (setq org-pretty-entities t)       ;; to have \alpha, \to and others display as utf8 http://orgmode.org/manual/Special-symbols.html
 #+END_SRC
+  TODO keywords.
+#+BEGIN_SRC emacs-lisp
+  (setq org-todo-keywords '((sequence "TODO(t)" "WAITING(w)" "|" "DONE(d)" "CANCELLED(c)")))
+#+END_SRC
+  Spell check
+#+BEGIN_SRC emacs-lisp
+  (add-hook 'org-mode-hook 'flyspell-prog-mode)
+#+END_SRC
+** org-capture
+   Some basic settings and keybindings
+#+BEGIN_SRC emacs-lisp
+  (setq org-default-notes-file (concat org-directory))
+  (global-set-key (kbd "C-c c") 'org-capture)
+
+  (defvar +org-default-todo-file "todo.org"
+    "TODO")
+
+  (defvar +org-default-notes-file "notes.org"
+    "TODO")
+#+END_SRC
+   Capture templates
+#+BEGIN_SRC emacs-lisp
+  (defvar org-capture-templates
+    '(("t" "Todo" entry
+       (file+headline "~/org/todo.org" "Inbox")
+       "* TODO %?\n%i" :prepend t :kill-buffer t)
+
+      ("n" "Notes" entry
+       (file+headline "~/org/notes.org" "Inbox")
+       "* %u %?\n%i" :prepend t :kill-buffer t)
+      ("p" "Protocol" entry (file+headline ,(concat org-directory "notes.org") "Inbox")
+       "* %^{Title}\nSource: %u, %c\n #+BEGIN_QUOTE\n%i\n#+END_QUOTE\n\n\n%?")
+      ("L" "Protocol Link" entry (file+headline ,(concat org-directory "notes.org") "Inbox")
+       "* %? [[%:link][%:description]] \nCaptured On: %U")
+      ))
+#+END_SRC
+** org-agenda
+   This is my org-agenda setup
+#+BEGIN_SRC emacs-lisp
+  (require 'org)
+  (define-key global-map "\C-cl" 'org-store-link)
+  (define-key global-map "\C-ca" 'org-agenda)
+  (setq org-log-done t)
+  (custom-set-variables
+   '(org-directory "~/org")
+   '(org-agenda-files (list org-directory)))
+#+END_SRC
+** org-babel
+   Add some babel engines
+#+BEGIN_SRC emacs-lisp
+  ;; active Babel languages
+  (org-babel-do-load-languages
+   'org-babel-load-languages
+   '((sql . t)))
+  ;; add additional languages with '((language . t)))
+#+END_SRC
+** org-protocol
+#+BEGIN_SRC emacs-lisp
+
+#+END_SRC
+** refile targets
+#+BEGIN_SRC emacs-lisp
+  (setq org-refile-targets '((nil :maxlevel . 2)
+				  (org-agenda-files :maxlevel . 3)))
+  (setq org-outline-path-complete-in-steps nil)         ; Refile in a single go
+  (setq org-refile-use-outline-path t)                  ; Show full paths for refiling
+#+END_SRC
 * Evil mode
+#+BEGIN_SRC emacs-lisp
+  ;; (use-package evil
+  ;;   :ensure t)
+  ;; (evil-mode 1)
+  ;; 
+  ;; (use-package evil-leader
+  ;;   :ensure t)
+  ;; (global-evil-leader-mode)
+  ;; 
+  ;; (use-package evil-org
+  ;;   :ensure t)
+#+END_SRC
+* xah-fly-keys
+Let's test them and maybe later move to colemak layout
+#+BEGIN_SRC emacs-lisp
+  (use-package xah-fly-keys
+    :ensure t)
+  (xah-fly-keys-set-layout "qwerty") ; required if you use qwerty
+  (xah-fly-keys 1)
+#+END_SRC
