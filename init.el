@@ -16,7 +16,7 @@
  '(org-directory "~/org")
  '(package-selected-packages
    (quote
-    (xah-fly-keys mastodon which-key web-mode solarized-theme smartparens quelpa-use-package powerline php-extras nodejs-repl magit lsp-ui lsp-php helm-company evil-org evil-leader elfeed-org doneburn-theme counsel company-php company-lsp circe aggressive-fill-paragraph ac-php)))
+    (org-protocol emojify mastodon which-key web-mode solarized-theme smartparens quelpa-use-package powerline php-extras nodejs-repl magit lsp-ui lsp-php helm-company evil-org evil-leader elfeed-org doneburn-theme counsel company-php company-lsp circe aggressive-fill-paragraph ac-php)))
  '(pdf-view-midnight-colors (quote ("#444444" . "#eeeeee"))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.

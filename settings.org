@@ -26,6 +26,12 @@ This package downloads and install packages from melpa and elpa
   (use-package quelpa-use-package
     :ensure t)
 #+END_SRC
+
+* Basic Emacs settings
+  Start emacsserver when Emacs starts
+#+BEGIN_SRC emacs-lisp
+  (server-start)
+#+END_SRC
 * UI settings
 ** Turn off menu bar
 #+BEGIN_SRC emacs-lisp
@@ -119,7 +125,7 @@ Fuzzy finder regexp for ivy
 ** General keybindings
 #+BEGIN_SRC emacs-lisp
   (global-set-key (kbd "<menu>") 'helm-M-x)
-#+END_SRC
+#+END_SRC 
 * Autocompletion
 For autocompletion I use company-mode
 #+BEGIN_SRC emacs-lisp
@@ -243,7 +249,6 @@ Some keybindings
 	  (define-key js-mode-map (kbd "C-c C-z") 'nodejs-repl-switch-to-repl)))
 #+END_SRC
 * Org mode
-  Let's start by setting default org-mode directory.
 #+BEGIN_SRC emacs-lisp
   (setq org-directory "~/org/")
 #+END_SRC
@@ -282,7 +287,7 @@ Some keybindings
   (defvar +org-default-notes-file "notes.org"
     "TODO")
 #+END_SRC
-   Capture templates
+Capture templates
 #+BEGIN_SRC emacs-lisp
   (defvar org-capture-templates
     '(("t" "Todo" entry
@@ -296,6 +301,9 @@ Some keybindings
        "* %^{Title}\nSource: %u, %c\n #+BEGIN_QUOTE\n%i\n#+END_QUOTE\n\n\n%?")
       ("L" "Protocol Link" entry (file+headline ,(concat org-directory "notes.org") "Inbox")
        "* %? [[%:link][%:description]] \nCaptured On: %U")
+      ("w" "Web site"
+       entry (file+olp "~/org/inbox.org" "Web")
+       "* %c :website:\n%U %?%:initial")
       ))
 #+END_SRC
 ** org-agenda
@@ -317,10 +325,6 @@ Some keybindings
    'org-babel-load-languages
    '((sql . t)))
   ;; add additional languages with '((language . t)))
-#+END_SRC
-** org-protocol
-#+BEGIN_SRC emacs-lisp
-
 #+END_SRC
 ** refile targets
 #+BEGIN_SRC emacs-lisp
